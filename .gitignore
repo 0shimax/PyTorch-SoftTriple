@@ -106,3 +106,4 @@ venv.bak/
 fashion-mnist/
 results/
 runs/
+mlruns/

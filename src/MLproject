@@ -1,0 +1,15 @@
+name: pytorch_softtriple
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      n-class: {type:int, default:10}
+      batch-size: {type:int, default:128}
+      epochs: {type:int, default:1}
+    command: |
+          python mnist_tensorboard_artifact.py \
+            --n-class {n-class}
+            --batch-size {batch-size} \
+            --epochs {epochs}
