@@ -36,7 +36,6 @@ def main(args):
         for key, value in vars(args).items():
             mlflow.log_param(key, value)
 
-        n_relational_embeddings = args.n_class**2
         n_tag_embeddings = args.n_class
         in_ch, out_ch = 1, 128
         model = TransNFCM(in_ch, out_ch, n_tag_embeddings,
@@ -54,16 +53,17 @@ def main(args):
         train_loader = loader(train_dataset, args.batch_size)
         test_loader = loader(test_dataset, 1, shuffle=False)
 
-        train(args, model, optimizer, train_loader)
+        if args.train:
+            train(args, model, optimizer, train_loader)
         test(args, model, test_loader,
             show_image_on_board=args.show_image_on_board,
             show_all_embedding=args.show_all_embedding)
 
         # Upload the TensorBoard event logs as a run artifact
         print("Uploading TensorBoard events as a run artifact...")
-        mlflow.log_artifacts(output_dir, artifact_path="events")
+        mlflow.log_artifacts(args.out_dir, artifact_path="events")
         print("\nLaunch TensorBoard with:\n\ntensorboard --logdir=%s" %
-            os.path.join(mlflow.get_artifact_uri(), "events"))
+            Path(mlflow.get_artifact_uri(), "events"))
 
 
 def train(args, model, optimizer, data_loader):
@@ -138,6 +138,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=1, help='number of epochs to train for')
     parser.add_argument('--show-image-on-board', action='store_false')
     parser.add_argument('--show-all-embedding', action='store_false')
+    parser.add_argument('--train', action='store_true')
     parser.add_argument('--out-dir', default='./results', help='folder to output data and model checkpoints')
     args = parser.parse_args()
     Path(args.out_dir).mkdir(parents=True, exist_ok=True),

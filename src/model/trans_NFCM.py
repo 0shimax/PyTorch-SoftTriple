@@ -53,10 +53,10 @@ def regularizer(W, C, K, tau=.2):
     return out
 
 
-def dist(x, W, C, K, target_category):
-    # n_batch, _ = x.shape
+def dist(x, W, C, K, target_category, tau=1e-2):
     st = soft_triple(x, W, target_category, C, K).mean()
     reg = regularizer(W, C, K)
+    # out = st + tau*reg
     out = st + reg
     return out
 
