@@ -67,6 +67,7 @@ def main(args):
 
 
 def train(args, model, optimizer, data_loader):
+    torch.autograd.set_detect_anomaly(True)
     model.train()
     for epoch in range(args.epochs):
         for i, (image, cat) in enumerate(data_loader):
