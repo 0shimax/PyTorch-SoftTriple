@@ -8,14 +8,14 @@ from .vidual_net import VidualNet
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def similarity_x_c(x, W_c, gamma=.2):
-    base = torch.mm(x, W_c.transpose(1, 0))
-    exp_base = (1/gamma*base).exponential_()
-    sum_k = exp_base.sum(dim=1)
+# def similarity_x_c(x, W_c, gamma=.2):
+#     base = torch.mm(x, W_c.transpose(1, 0))
+#     exp_base = (1/gamma*base).exponential_()
+#     sum_k = exp_base.sum(dim=1)
 
-    similarity = exp_base*base/sum_k.unsqueeze(dim=1)
-    similarity = similarity.sum(dim=1)
-    return similarity
+#     similarity = exp_base*base/sum_k.unsqueeze(dim=1)
+#     similarity = similarity.sum(dim=1)
+#     return similarity
 
 
 def similarity_x(x, W, n_categories, n_multi_center, gamma=.2):
